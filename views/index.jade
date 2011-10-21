@@ -1,0 +1,42 @@
+#find-box
+	button#find.btn.primary Search
+	input#find-input(placeholder='Start writing here...')
+
+
+#overview
+	#sources
+		ul
+			li
+				a(href='#javascripts') JavaScripts
+			li
+				a(href='#stylesheets')	Stylesheets
+			li
+				a(href='#jQuery') jQuery related
+
+		div
+			#javascripts
+				ul
+
+			#stylesheets
+				ul
+
+			#jQuery				
+				ul
+
+	.clearfix
+
+#url-container
+	h2 URL stack
+	ul#urls
+		- each url in urls
+			li
+				label
+					//input(type='radio', name='url', value='#{url._id}')
+					|  #{url.URL} 
+					a(href='#{url._id}').remove remove
+	button#add.btn.secondary.skin Add new URL
+
+.clearfix
+
+#welcome
+	.loading

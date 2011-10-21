@@ -1,0 +1,78 @@
+#urls li a {
+	display: none;
+}
+
+#urls li:hover a {
+	display: inline;
+	cursor: pointer;
+}
+
+#find-box {
+	margin: 5px;
+	padding: 8px;
+	background-color: #eee;
+}
+
+#find-input {
+
+}
+
+#as-selections-loco {
+ 	width: 80%;
+}
+
+#find.btn {
+	width: 19%;	
+	float: right;
+}
+
+.hover {
+	background-color: #eee;
+	border-radius: 5px;
+}
+
+.selected {
+	background-color: #ccc;
+	border-radius: 5px;	
+}
+
+li {
+	margin: 3px;
+	padding: 3px;
+}
+
+#overview {
+	padding-left: 350px;
+}
+
+#url-container {
+	position: fixed;
+	left: 30px;
+	top: 150px; 
+	width: 300px;
+}
+
+#javascripts li, #stylesheets li, #jQuery li {
+	cursor: pointer;
+}
+
+.ch-tabNavigator-content {
+	overflow: hidden;
+}
+
+#welcome {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: white;
+	margin-top: 50px;
+}
+
+footer {
+	position: fixed;
+	bottom: 0;
+	background: white;
+	width: 100%;
+}
