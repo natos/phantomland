@@ -6,38 +6,11 @@ html(lang='en')
 		title #{title}
 
 		link(href='/css/chico.css', rel='stylesheet')
+		link(href='/css/mesh.css', rel='stylesheet')
 		link(href='/css/autosuggest.css', rel='stylesheet')
 		link(href='/css/ph.css', rel='stylesheet')
 
 	body
-		header.container
-			h1 Phantomland
-
 	body!= body
 	
-	.clearfix
-	footer
-		hr
-		p ©2011 UPC Broadband
-		small Builded with: 
-			a(href='http://nodejs.org/') NodeJS
-			| , 
-			a(href='http://www.mongodb.org/') MongoDB
-			| , 
-			a(href='http://mongoosejs.com/') Mongoose
-			| , 
-			a(href='http://www.phantomjs.org/') PhantomJS
-			| , 
-			a(href='http://expressjs.com/') ExpressJS
-			| , 
-			a(href='http://jade-lang.com/') Jade
-			| , 
-			a(href='http://socket.io/') SocketIO
-			| , 
-			a(href='http://chicoui.com.ar/') Chico UI
-			| , 
-			a(href='http://code.drewwilson.com/entry/autosuggest-jquery-plugin') Autosuggest jQuery Plugin
-			| , 
-			| and lots of JavaScript.
-
 script(src='/js/scr.js')
