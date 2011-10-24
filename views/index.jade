@@ -2,6 +2,14 @@
 	button#find.btn.primary Search
 	input#find-input(placeholder='Start writing here...')
 
+#url-container
+	button#add.btn.secondary Add new URL
+	h2 URL stack
+	ul#urls.list
+		- each url in urls
+			li(data-id=url._id)
+				label
+					a(href='/url-details/' + url._id) #{url.URL} 
 
 #overview
 	#sources
@@ -15,26 +23,15 @@
 
 		div
 			#javascripts
-				ul
+				ul.list
 
 			#stylesheets
-				ul
+				ul.list
 
-			#jQuery				
-				ul
+			#jQuery		
+				ul.list
 
 	.clearfix
-
-#url-container
-	h2 URL stack
-	ul#urls
-		- each url in urls
-			li
-				label
-					//input(type='radio', name='url', value='#{url._id}')
-					|  #{url.URL} 
-					a(href='#{url._id}').remove remove
-	button#add.btn.secondary.skin Add new URL
 
 .clearfix
 

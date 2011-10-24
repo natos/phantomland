@@ -1,10 +1,45 @@
-#urls li a {
-	display: none;
+#add {
+	float: right;
+	opacity: 0;
+	-webkit-transition: opacity .5s linear;
 }
 
-#urls li:hover a {
-	display: inline;
-	cursor: pointer;
+#add.visible {
+	opacity: 1;
+}
+
+#url-container {
+	position: fixed;
+	left: 30px;
+	top: 150px; 
+	width: 300px;
+	padding: 5px;
+	border: solid 1px #fff;
+	-webkit-transition: border .5s linear;
+}
+
+#url-container:hover {
+	border-radius: 5px;
+	border: solid 1px #eee;
+}
+
+#url-container:hover #add {
+	opacity: 1;
+}
+
+#urls li:hover {
+	background-color: #eee;
+}
+
+.options {
+	float: right;
+	opacity: 0;
+	-webkit-transition: opacity .5s linear;
+}
+
+li:hover .options {
+	cursor: default;
+	opacity: 1;
 }
 
 #find-box {
@@ -36,20 +71,13 @@
 	border-radius: 5px;	
 }
 
-li {
+.list > li {
 	margin: 3px;
-	padding: 3px;
+	padding: 8px;
 }
 
 #overview {
 	padding-left: 350px;
-}
-
-#url-container {
-	position: fixed;
-	left: 30px;
-	top: 150px; 
-	width: 300px;
 }
 
 #javascripts li, #stylesheets li, #jQuery li {

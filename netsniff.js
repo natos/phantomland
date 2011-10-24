@@ -87,8 +87,10 @@ function createHAR(address, title, startTime, resources)
 var page = new WebPage();
 
 if (phantom.args.length === 0) {
+
     console.log('Usage: netsniff.js <some URL>');
     phantom.exit();
+
 } else {
 
     page.address = phantom.args[0];
@@ -116,15 +118,55 @@ if (phantom.args.length === 0) {
     };
 
     page.open(page.address, function (status) {
-        var har;
+
+		var foolish; // transport object
+
         if (status !== 'success') {
+
             console.log('FAIL to load the address');
+
         } else {
+			
+			// Create HAR file
             page.title = page.evaluate(function () {
                 return document.title;
             });
-            har = createHAR(page.address, page.title, page.startTime, page.resources);
-            console.log(JSON.stringify(har, undefined, 4));
+
+            foolish = createHAR(page.address, page.title, page.startTime, page.resources);
+
+			// Create scripts collection
+			foolish.scripts = page.evaluate(function() {
+	            var list = document.querySelectorAll('script'), scripts = [], script, i;
+    	        for (i = 0; i < list.length; i++) {
+					script = list[i];
+        	        scripts.push( (script.src === "") ? script.innerText : script.src );
+            	}
+	            return scripts;
+    	    });
+
+			// Create styles collection
+			foolish.styles = {
+				inline: page.evaluate(function() {
+		            var list = document.querySelectorAll('style'), styles = [], style, i;
+    		        for (i = 0; i < list.length; i++) {
+						style = list[i];
+						styles.push( style.innerText );
+	            	}
+		            return styles;
+    		    }),
+				linked: page.evaluate(function() {
+		            var list = document.querySelectorAll('link'), links = [], link, i;
+    		        for (i = 0; i < list.length; i++) {
+						link = list[i];
+						if (link.rel === "stylesheet") {
+							links.push( link.href );
+						}
+	            	}
+		            return links;
+    		    })
+			};
+
+            console.log(JSON.stringify(foolish, undefined, 4));
         }
         phantom.exit();
     });

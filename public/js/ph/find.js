@@ -21,7 +21,7 @@ ph.controller.find = (function() {
 			$('li').removeClass('selected');
 
 			$(data).each(function(i, e){
-				$('a[href="' + e._id + '"]').parents('li').addClass('selected');
+				$('li[data-id="' + e._id + '"]').addClass('selected');
 			});
 		}
 	});

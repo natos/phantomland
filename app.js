@@ -114,6 +114,16 @@ io.sockets.on('connection', function (socket) {
 
 	});
 
+	/**
+	*	URL Details
+	*/
+	socket.on('url details', function(id) {
+
+		URLModel.findOne({ _id: id }).exec(function(err, data) {
+			socket.emit('url detailed', data);
+		});		
+
+	});
 
 	/**
 	* Add URL socket listener

@@ -38,7 +38,7 @@ ph.controller = {}
 *	UI Conf
 */
 ph.initialize = function() {
-
+	
 	$('#sources').tabNavigator();
 
 	ph.socket.emit('overview-update');

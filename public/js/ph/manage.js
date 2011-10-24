@@ -6,6 +6,88 @@
 ph.controller.manage = (function() {
 
 /**
+*	Request URL details
+*/
+
+	var details = {};
+
+	// render details
+	var renderDetails = function(data) {
+
+		var render = '<div>'
+			+ '<h2>Details</h2>'
+			+ '<h3>' + data.URL + '</h3>'
+			+ '<h4>JavaScripts ' + data.javascripts.length + '</h4>'
+			+ '<ul>'
+		$(data.javascripts).each(function(i, e){
+			render += '<li>' + e + '</li>';
+		});
+			render += '</ul><hr>'
+			+ '<h4>StyleSheets ' + data.stylesheets.length + '</h4>'
+			+ '<ul>'
+		$(data.stylesheets).each(function(i, e){
+			render += '<li>' + e + '</li>';
+		});
+			+ '</ul>'
+			+ '</div>';
+
+		$('<a>').modal(render).width(600).show();
+
+	}
+
+	// reques details handler
+	var requestDetails = function(e) {
+
+		e.preventDefault();
+		e.stopPropagation()
+
+		var _id = $(this).attr('data-id');
+		
+		if ( !details[_id] ) {
+			ph.socket.emit('url details', _id);
+		} else {
+			renderDetails( details[_id] );
+		}
+
+	}
+
+	// Recieve URL details and render baby!
+	ph.socket.on('url detailed', function(data) {
+
+		details[data._id] = data;
+		renderDetails(data);
+
+	});
+
+
+/**
+*	Remove
+*/
+
+	var removeURL = function(e) {
+
+		e.preventDefault();
+		e.stopPropagation()
+
+		var _id = $(this).parents('li').attr('data-id');
+		if (_id) {
+			ph.socket.emit( 'remove', { _id: _id });
+		}
+	}
+
+	// Recieve the OK from the server
+	ph.socket.on('removed', function(data) {
+
+		$('li[data-id="' + data._id +'"]')
+			.fadeOut(function() { 
+				$(this).remove();
+			});
+
+		ph.socket.emit('overview-update');
+
+	});
+
+/**
 *	Add
 */
 
@@ -20,6 +102,7 @@ ph.controller.manage = (function() {
 
 	// Behavior
 	var addURL = function(e){
+		addLayer.hide();
 		var url = addField.val();
 		if (url) {
 			addLayer.hide();
@@ -35,6 +118,7 @@ ph.controller.manage = (function() {
 			content: addBox
 		});
 		addLayer.on('show', function(){
+			$('#add').addClass('visible');
 			addLayer.content(addBox);
 			addField.focus();
 
@@ -46,6 +130,8 @@ ph.controller.manage = (function() {
 					addURL(e)
 				}
 			});
+		}).on('hide', function(){
+			$('#add').removeClass('visible');
 		});
 
 
@@ -53,51 +139,21 @@ ph.controller.manage = (function() {
 	ph.socket.on('added', function(data) {	
 		if ( data ) {
 			$('.loading.small').parent().remove();
-			$('<li><label>' + data.url + ' <a href="' + data._id + '" class="remove">remove</a></label></li>')
+			var list = $('<li data-id="' + data._id + '"><label><a href="/url-details/' + data._id + '">' + data.url + '</label></li>')
 				.hide()
+				.click(requestDetails)
 				.appendTo('#urls')
-				.fadeIn()
-				.find('.remove')
-				.click(removeURL);
+				.fadeIn();
+			
+			var options = $('<button class="options btn secondary skin">delete</button>')
+				options
+					.click(removeURL)
+					.appendTo(list);
 
 			// Update Overview
 			ph.socket.emit('overview-update');
 		}
 	});
-
-
-/**
-*	Remove
-*/
-
-	var removeURL = function(e) {
-
-		e.preventDefault();
-		e.stopPropagation();
-
-		var _id = $(this).attr('href');
-		if (_id) {
-			ph.socket.emit( 'remove', { _id: _id });
-		}
-	}
-
-	// Send the order to the server
-	$('.remove').click(removeURL);
-
-
-	// Recieve the OK from the server
-	ph.socket.on('removed', function(data) {
-
-		$('a[href="' + data._id +'"]')
-			.parents('li')
-			.fadeOut(function() { 
-				$(this).remove();
-			});
-
-		ph.socket.emit('overview-update');
-
-	});
-
 
 /**
 * 	Error
@@ -107,6 +163,22 @@ ph.controller.manage = (function() {
 
 		$('<a>').modal(data.error).show();
 
+	});
+
+
+/**
+*	Starter kit
+*/
+	$('#urls li').each(function(i, e){
+		
+		// Add extended details
+		$(e).click(requestDetails);
+
+		// Add options behavior
+		var options = $('<button class="options btn secondary skin">delete</button>')
+			options
+				.click(removeURL)
+				.appendTo(e);
 	});
 
 }());
